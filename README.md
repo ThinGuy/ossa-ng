@@ -57,14 +57,6 @@ sudo python3 demo/ossa-lite.py --geo-allow US
 per-component package manifests. See [`demo/ossa-lite-README.md`](demo/ossa-lite-README.md)
 for prerequisites and the full tour.
 
-## Status
-
-The production tool is a single static Go binary, built in phases —
-collector → analyzer → reporter — each landing with fixtures and tests.
-[`docs/ossa-spec.md`](docs/ossa-spec.md) is the law; [`docs/guardrails-ossa.md`](docs/guardrails-ossa.md)
-keeps contributors (human and otherwise) honest. Phase 0 (schema) is
-merged, phase 1 (collector) is in flight, and the demo above is the
-preview of where it all lands.
 
 ## Lineage
 
