@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OSSA report — cb-pebs | Canonical</title><style>
+@font-face{font-family:"Ubuntu variable";font-style:normal;font-weight:100 800;src:url("https://assets.ubuntu.com/v1/f1ea362b-Ubuntu[wdth,wght]-latin-v0.896a.woff2") format("woff2");font-display:swap;}
+@font-face{font-family:"Ubuntu Mono variable";font-style:normal;font-weight:100 800;src:url("https://assets.ubuntu.com/v1/d5fc1819-UbuntuMono[wght]-latin-v0.869.woff2") format("woff2");font-display:swap;}
+:root{--orange:#e95420;--dark:#262626;--active:#313131;--bg:#ffffff;--bg-alt:#f7f7f7;--bg-paper:#f3f3f3;
+--green:#0e8420;--amber:#f99b11;--red:#c7162b;--gray:#757575;--teal:#0f95a1;
+--border:rgba(0,0,0,0.2);--border-lt:rgba(0,0,0,0.1);
+--sans:"Ubuntu variable","Ubuntu",-apple-system,"Segoe UI",Roboto,sans-serif;
+--mono:"Ubuntu Mono variable","Ubuntu Mono",Consolas,Monaco,Courier,monospace;}
+*{margin:0;padding:0;box-sizing:border-box;border-radius:0;}
+body{font-family:var(--sans);background:var(--bg-alt);color:#111;font-size:14px;}
+a{color:#06c;text-decoration:none;}
+.topbar{height:48px;background:var(--dark);display:flex;align-items:center;padding:0 24px;gap:16px;position:sticky;top:0;z-index:10;}
+.topbar h1{color:#fff;font-size:18px;font-weight:300;}
+.hostbadge{background:rgba(255,255,255,0.2);color:#fff;font-size:12px;padding:2px 8px;font-family:var(--mono);}
+.topmeta{color:#bbb;font-size:12px;}
+.layout{display:flex;min-height:calc(100vh - 48px);}
+.sidebar{width:208px;flex-shrink:0;background:var(--dark);border-left:4px solid var(--orange);display:flex;flex-direction:column;}
+.sb-logo{padding:16px;display:flex;align-items:center;gap:8px;}
+.sb-logo .mark{width:22px;height:22px;background:var(--orange);flex-shrink:0;}
+.sb-logo span{color:#fff;font-size:14px;font-weight:300;white-space:nowrap;}
+.sb-head{font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#6f6f6f;padding:16px 16px 4px;}
+.nav-item{display:flex;align-items:center;gap:8px;padding:8px 16px;font-size:13px;color:#9a9a9a;border-left:2px solid transparent;}
+a.nav-item:hover{color:#fff;}
+.nav-item.active{background:var(--active);color:#fff;border-left:2px solid var(--orange);}
+.sb-version{margin-top:auto;padding:16px;font-size:10px;color:#5c5c5c;}
+.content{flex:1;min-width:0;padding:24px;display:flex;flex-direction:column;gap:16px;}
+.pagehead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;}
+.pagehead h2{font-size:24px;font-weight:300;}
+.pagehead .meta{font-size:12px;color:var(--gray);}
+.chip{font-size:10px;font-weight:500;padding:2px 8px;}
+.chip.green{background:#e6f2e9;color:var(--green);}
+.chip.gray{background:#efefef;color:var(--gray);}
+.alert{padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.alert.red{background:#fbebed;border-left:4px solid var(--red);}
+.alert.red strong{color:var(--red);}
+.alert.amber{background:#fdf3e1;border-left:4px solid var(--amber);}
+.alert.amber strong{color:#b5720c;}
+.alert.green{background:#e6f2e9;border-left:4px solid var(--green);}
+.alert.green strong{color:var(--green);}
+.alert strong{font-weight:500;}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;}
+.card{background:#fff;border:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,0.05);padding:16px;}
+.stat .label{font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--gray);}
+.stat .value{font-size:26px;font-weight:300;margin:2px 0;}
+.stat .sub{font-size:11px;color:#9a9a9a;}
+.card h3{font-size:14px;font-weight:500;margin-bottom:12px;}
+.card h3 .note{font-weight:400;color:var(--gray);font-size:12px;}
+.two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:12px;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--bg-alt);text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--gray);font-weight:500;padding:8px 10px;border-bottom:2px solid var(--border);}
+td{padding:9px 10px;border-bottom:1px solid var(--border-lt);vertical-align:middle;}
+tr:hover td{background:var(--bg-alt);}
+.mono{font-family:var(--mono);font-size:12px;word-break:break-all;}
+.badge{display:inline-flex;align-items:center;padding:1px 8px;font-size:11px;white-space:nowrap;}
+.b-green{background:#e6f2e9;color:var(--green);}
+.b-amber{background:#fdf3e1;color:#b5720c;}
+.b-red{background:#fbebed;color:var(--red);}
+.b-gray{background:#efefef;color:var(--gray);}
+.b-teal{background:#e5f4f5;color:#0b6f78;}
+.sq{display:inline-block;width:9px;height:9px;margin-right:6px;}
+.provbar{display:flex;height:20px;width:100%;}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;font-size:12px;color:#444;}
+.xtab{display:grid;grid-template-columns:88px minmax(0,1fr) 170px;gap:8px 12px;align-items:center;font-size:12px;}
+.bar{background:#ececec;height:15px;position:relative;}
+.bar .fill{background:#d9d9d9;height:15px;}
+.bar .use{position:absolute;top:0;left:0;background:var(--green);height:15px;}
+.ciso{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;}
+.ciso .card{border-top:3px solid var(--border);}
+.ciso .t-red{border-top-color:var(--red);}
+.ciso .t-amber{border-top-color:var(--amber);}
+.ciso .t-green{border-top-color:var(--green);}
+.ciso .t-teal{border-top-color:var(--teal);}
+.ciso .k{font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--gray);margin-bottom:4px;}
+.ciso .v{font-size:16px;font-weight:400;margin-bottom:4px;}
+.ciso .d{font-size:11.5px;color:#666;line-height:1.5;}
+.rec{border-left:4px solid var(--green);}
+.rec h3{color:var(--green);}
+.rec.amber{border-left-color:var(--amber);}
+.rec.amber h3{color:#b5720c;}
+.subchip{font-family:var(--mono);font-size:11px;background:var(--bg-paper);border:1px solid rgba(0,0,0,0.15);padding:2px 8px;display:inline-block;margin:2px 4px 0 0;}
+.honesty{background:#fff;border:1px solid var(--border);border-left:4px solid var(--teal);padding:10px 16px;font-size:12px;color:#444;line-height:1.6;}
+.honesty ul{margin:6px 0 0 18px;}
+.footer{font-size:11px;color:#9a9a9a;font-family:var(--mono);padding:4px 0 12px;}
+</style></head><body>
+<div class="topbar"><h1>Canonical OSSA</h1><span class="hostbadge">cb-pebs</span>
+<span class="topmeta">scanned 2026-11-16 08:54 PST · lite demo · read-only · nothing left this machine</span></div>
+<div class="layout"><nav class="sidebar">
+<div class="sb-logo"><span class="mark"></span><span>Canonical OSSA</span></div>
+<div class="sb-head">Report</div><a class="nav-item active" href="#overview">Overview</a><a class="nav-item" href="#supportability">Supportability</a><a class="nav-item" href="#usage">Usage</a><a class="nav-item" href="#connections">Connections</a><a class="nav-item" href="#security">Security</a><a class="nav-item" href="#crypto">Crypto & hardening</a><a class="nav-item" href="#tier">Tier fit</a>
+<div class="sb-version">ossa-lite v0.4.2-lite</div></nav>
+<main class="content">
+    <div class="pagehead" id="overview">
+      <h2>cb-pebs — assessment report</h2>
+      <span class="meta">Ubuntu 26.04.1 LTS · resolute · x86_64 · kernel 7.0.0-43-generic · HP HP Laptop 17-cn1xxx · 50 mounts · 2 users · machine-id <span class="mono">429245d7335e47fa83e6b37dc397ff68</span></span>
+      <span class="chip green">CycloneDX 1.6</span><span class="chip gray">SPDX — full build</span>
+    </div>
+    <div class="alert red"><strong>1 binary owned by no installed package hold 2 outbound connections</strong><span>— see Connections. This is the first thing to explain.</span></div>
+    <div class="cards"><div class="card stat"><div class="label">Installed</div><div class="value" style="">2,125</div><div class="sub">27 snaps alongside</div></div><div class="card stat"><div class="label">Proven in use</div><div class="value" style="color:var(--green);">75</div><div class="sub">process or socket evidence</div></div><div class="card stat"><div class="label">Likely used</div><div class="value" style="color:var(--green);">43</div><div class="sub">config, unit, or user state</div></div><div class="card stat"><div class="label">Config-residual</div><div class="value" style="color:var(--gray);">16</div><div class="sub">awaiting purge — not installed</div></div><div class="card stat"><div class="label">Outside coverage</div><div class="value" style="color:var(--red);">3</div><div class="sub">third-party, PPA, or unknown</div></div><div class="card stat"><div class="label">Security updates</div><div class="value" style="">0</div><div class="sub">0 in in-use packages</div></div><div class="card stat"><div class="label">Geo violations</div><div class="value" style="color:var(--green);">0</div><div class="sub">expected: US</div></div></div>
+    <div class="card" id="connections"><h3>Connections <span class="note">— 14 established sessions · 10 public, 1 internal destinations · no local geo db found — install geoip-bin or a GeoLite2 db · expected geography: US</span></h3>
+      <table><thead><tr><th>Remote</th><th>Geo</th><th>Process → package</th><th>Provenance</th><th>Verdict</th></tr></thead>
+      <tbody><tr><td class='mono'>162.125.40.1:443</td><td><span style="color:var(--gray);">—</span></td><td class='mono'>dropbox → <span style="color:var(--red);">none</span></td><td><span class="badge b-red">unowned binary</span></td><td><span class="badge b-red">investigate now</span></td></tr><tr><td class='mono'>162.125.40.2:443</td><td><span style="color:var(--gray);">—</span></td><td class='mono'>dropbox → <span style="color:var(--red);">none</span></td><td><span class="badge b-red">unowned binary</span></td><td><span class="badge b-red">investigate now</span></td></tr><tr><td class='mono'>172.64.155.209:443</td><td><span style="color:var(--gray);">—</span></td><td class='mono'>chrome → google-chrome-stable</td><td><span class="badge b-red">third-party</span></td><td><span class="badge b-amber">review</span></td></tr><tr><td class='mono'>140.82.112.26:443</td><td><span style="color:var(--gray);">—</span></td><td class='mono'>chrome → google-chrome-stable</td><td><span class="badge b-red">third-party</span></td><td><span class="badge b-amber">review</span></td></tr><tr><td class='mono'>104.18.39.21:443 ×2</td><td><span style="color:var(--gray);">—</span></td><td class='mono'>chrome → google-chrome-stable</td><td><span class="badge b-red">third-party</span></td><td><span class="badge b-amber">review</span></td></tr><tr><td class='mono'>35.206.118.237:443</td><td><span style="color:var(--gray);">—</span></td><td class='mono'>chrome → google-chrome-stable</td><td><span class="badge b-red">third-party</span></td><td><span class="badge b-amber">review</span></td></tr><tr><td class='mono'>104.18.32.47:443</td><td><span style="color:var(--gray);">—</span></td><td class='mono'>chrome → google-chrome-stable</td><td><span class="badge b-red">third-party</span></td><td><span class="badge b-amber">review</span></td></tr><tr><td class='mono'>160.79.104.10:443 ×2</td><td><span style="color:var(--gray);">—</span></td><td class='mono'>chrome → google-chrome-stable</td><td><span class="badge b-red">third-party</span></td><td><span class="badge b-amber">review</span></td></tr><tr><td class='mono'>142.250.141.188:5228</td><td><span style="color:var(--gray);">—</span></td><td class='mono'>chrome → google-chrome-stable</td><td><span class="badge b-red">third-party</span></td><td><span class="badge b-amber">review</span></td></tr><tr><td class='mono'>+ 2 more</td><td></td><td></td><td></td><td></td></tr></tbody></table></div>
+    <div class="ciso" id="security"><div class="card t-green"><div class="k">Security updates</div><div class="v">none pending</div><div class="d">Patch order is weighted by what actually runs, not alphabetical.</div></div><div class="card t-green"><div class="k">Livepatch</div><div class="v">enrolled</div><div class="d">Kernel CVEs patched live — zero reboots, zero maintenance windows.</div></div><div class="card t-amber"><div class="k">FIPS 140-3</div><div class="v">not enabled</div><div class="d">Certified modules are one command away via Ubuntu Pro where required.</div></div><div class="card t-teal"><div class="k">Evidence bundle</div><div class="v">this report + SBOM</div><div class="d">CycloneDX SBOM written alongside. Signed .ossa bundle and SPDX land in the full build.</div></div></div>
+    <div class="two-col" id="crypto">
+      <div class="card"><h3>Cryptographic posture <span class="note">— read from the system, never inferred</span></h3>
+        <table><tbody><tr><td><span class='sq' style='background:var(--amber);'></span>FIPS mode not enabled</td><td style='text-align:right;'><span class="badge b-amber">info</span></td></tr><tr><td><span class='sq' style='background:var(--green);'></span>SSH host keys: <span class='mono'>ecdsa-256, ed25519, rsa-3072</span></td><td style='text-align:right;'><span class="badge b-green">pass</span></td></tr><tr><td><span class='sq' style='background:var(--green);'></span>SSH ciphers/MACs/KEX: OpenSSH defaults (strong)</td><td style='text-align:right;'><span class="badge b-green">pass</span></td></tr><tr><td><span class='sq' style='background:var(--green);'></span>System TLS policy: distribution default (≥ TLS 1.2), SECLEVEL 2 (default)</td><td style='text-align:right;'><span class="badge b-green">pass</span></td></tr><tr><td><span class='sq' style='background:var(--green);'></span>Password hashes: sha512 ×1</td><td style='text-align:right;'><span class="badge b-green">pass</span></td></tr><tr><td><span class='sq' style='background:var(--amber);'></span>No LUKS-encrypted volumes detected</td><td style='text-align:right;'><span class="badge b-amber">review</span></td></tr><tr><td><span class='sq' style='background:var(--green);'></span>Secure Boot enabled</td><td style='text-align:right;'><span class="badge b-green">pass</span></td></tr><tr><td><span class='sq' style='background:var(--green);'></span>TPM present</td><td style='text-align:right;'><span class="badge b-green">pass</span></td></tr></tbody></table></div>
+      <div class="card"><h3>Hardening <span class="note">— kernel and platform controls</span></h3>
+        <table><tbody><tr><td><span class='sq' style='background:var(--green);'></span>AppArmor enabled · 231 profiles in enforce mode</td><td style='text-align:right;'><span class="badge b-green">pass</span></td></tr><tr><td><span class='sq' style='background:var(--green);'></span>Kernel lockdown: integrity</td><td style='text-align:right;'><span class="badge b-green">pass</span></td></tr><tr><td><span class='sq' style='background:var(--green);'></span>ASLR (<span class='mono'>kernel.randomize_va_space=2</span>)</td><td style='text-align:right;'><span class="badge b-green">pass</span></td></tr><tr><td><span class='sq' style='background:var(--green);'></span>ptrace scope restricted (<span class='mono'>kernel.yama.ptrace_scope=1</span>)</td><td style='text-align:right;'><span class="badge b-green">pass</span></td></tr><tr><td><span class='sq' style='background:var(--green);'></span>Kernel pointers hidden (<span class='mono'>kernel.kptr_restrict=1</span>)</td><td style='text-align:right;'><span class="badge b-green">pass</span></td></tr><tr><td><span class='sq' style='background:var(--green);'></span>dmesg restricted (<span class='mono'>kernel.dmesg_restrict=1</span>)</td><td style='text-align:right;'><span class="badge b-green">pass</span></td></tr><tr><td><span class='sq' style='background:var(--green);'></span>Unprivileged BPF disabled (<span class='mono'>kernel.unprivileged_bpf_disabled=2</span>)</td><td style='text-align:right;'><span class="badge b-green">pass</span></td></tr><tr><td><span class='sq' style='background:var(--green);'></span>Symlink/hardlink protection (<span class='mono'>fs.protected_symlinks=1</span>)</td><td style='text-align:right;'><span class="badge b-green">pass</span></td></tr><tr><td><span class='sq' style='background:var(--green);'></span>TCP SYN cookies (<span class='mono'>net.ipv4.tcp_syncookies=1</span>)</td><td style='text-align:right;'><span class="badge b-green">pass</span></td></tr><tr><td><span class='sq' style='background:var(--gray);'></span>Ubuntu Security Guide (CIS/STIG tooling) not installed</td><td style='text-align:right;'><span class="badge b-gray">via Ubuntu Pro</span></td></tr></tbody></table></div>
+    </div>
+    <div class="two-col">
+      <div class="card" id="supportability"><h3>Software provenance <span class="note">— installed version vs apt indices, resolved offline</span></h3>
+        <div class="provbar"><div style="width:98.82%;background:var(--green);"></div><div style="width:1.04%;background:var(--teal);"></div><div style="width:0.09%;background:var(--amber);"></div><div style="width:0.05%;background:var(--red);"></div></div><div class="legend"><span><span class="sq" style="background:var(--green);"></span>Canonical archive 2,100</span><span><span class="sq" style="background:var(--teal);"></span>Canonical Pro/ESM 22</span><span><span class="sq" style="background:var(--amber);"></span>PPA 2</span><span><span class="sq" style="background:var(--red);"></span>Third-party 1</span></div></div>
+      <div class="card" id="usage"><h3>Component × usage <span class="note">— Canonical-origin packages, installed vs in use</span></h3>
+        <div class="xtab"><span class="mono">main</span><div class="bar"><div class="fill" style="width:86.7%;"></div><div class="use" style="width:5.2%;"></div></div><span>1,843 · <span style="color:var(--green);font-weight:500;">110 in use</span></span><span class="mono">universe</span><div class="bar"><div class="fill" style="width:13.1%;"></div><div class="use" style="width:0.3%;"></div></div><span>278 · <span style="color:var(--green);font-weight:500;">6 in use</span></span><span class="mono">multiverse</span><div class="bar"><div class="fill" style="width:0.0%;"></div><div class="use" style="width:0.0%;"></div></div><span>1 · <span style="color:var(--green);font-weight:500;">0 in use</span></span></div></div>
+    </div>
+    <div class="two-col" id="census">
+      <div class="card"><h3>Package census <span class="note">— installed vs available, from the Canonical archive indices on this host</span></h3>
+        <table><thead><tr><th>Component</th><th style="text-align:right;">Available</th><th style="text-align:right;">Installed</th><th style="text-align:right;">In use</th><th style="text-align:right;">Share installed</th></tr></thead>
+        <tbody><tr><td class='mono'>main</td><td style='text-align:right;'>8,641</td><td style='text-align:right;'>1,843</td><td style='text-align:right;color:var(--green);font-weight:500;'>110</td><td style='text-align:right;color:var(--gray);'>21.3%</td></tr><tr><td class='mono'>universe</td><td style='text-align:right;'>66,802</td><td style='text-align:right;'>278</td><td style='text-align:right;color:var(--green);font-weight:500;'>6</td><td style='text-align:right;color:var(--gray);'>0.4%</td></tr><tr><td class='mono'>multiverse</td><td style='text-align:right;'>1,317</td><td style='text-align:right;'>1</td><td style='text-align:right;color:var(--green);font-weight:500;'>0</td><td style='text-align:right;color:var(--gray);'>0.1%</td></tr><tr><td class='mono'>restricted</td><td style='text-align:right;'>3,377</td><td style='text-align:right;'>0</td><td style='text-align:right;color:var(--green);font-weight:500;'>0</td><td style='text-align:right;color:var(--gray);'>0.0%</td></tr><tr><td class='mono'>other origins</td><td style='text-align:right;color:var(--gray);'>—</td><td style='text-align:right;'>3</td><td style='text-align:right;color:var(--green);font-weight:500;'>2</td><td style='text-align:right;color:var(--gray);'>—</td></tr><tr><td style='font-weight:500;'>Totals</td><td style='text-align:right;font-weight:500;'>80,137</td><td style='text-align:right;font-weight:500;'>2,125</td><td style='text-align:right;font-weight:500;color:var(--green);'>118</td><td></td></tr></tbody></table></div>
+      <div class="card"><h3>Package manifests <span class="note">— written beside this report, name + version per line</span></h3>
+        <table><thead><tr><th>File</th><th style="text-align:right;">Packages</th></tr></thead>
+        <tbody><tr><td class='mono'>ubuntu-Resolute_main_amd64.installed.manifest</td><td style='text-align:right;color:var(--gray);'>1,843</td></tr><tr><td class='mono'>ubuntu-Resolute_universe_amd64.installed.manifest</td><td style='text-align:right;color:var(--gray);'>278</td></tr><tr><td class='mono'>ubuntu-Resolute_multiverse_amd64.installed.manifest</td><td style='text-align:right;color:var(--gray);'>1</td></tr><tr><td class='mono'>ubuntu-Resolute_restricted_amd64.installed.manifest</td><td style='text-align:right;color:var(--gray);'>0</td></tr><tr><td class='mono'>ubuntu-Resolute_other_amd64.installed.manifest</td><td style='text-align:right;color:var(--gray);'>3</td></tr><tr><td class='mono'>ubuntu-Resolute_main_amd64.all.manifest</td><td style='text-align:right;color:var(--gray);'>8,641</td></tr><tr><td class='mono'>ubuntu-Resolute_universe_amd64.all.manifest</td><td style='text-align:right;color:var(--gray);'>66,802</td></tr><tr><td class='mono'>ubuntu-Resolute_multiverse_amd64.all.manifest</td><td style='text-align:right;color:var(--gray);'>1,317</td></tr><tr><td class='mono'>ubuntu-Resolute_restricted_amd64.all.manifest</td><td style='text-align:right;color:var(--gray);'>3,377</td></tr></tbody></table></div>
+    </div>
+    <div class="two-col">
+      <div class="card rec amber" id="tier"><h3>Recommendation: Applications coverage earns its keep</h3>
+        <div style="font-size:12.5px;color:#444;line-height:1.6;">6 in-use packages sit outside main with no main-component substitute. This is the evidence-backed case for the higher tier — auditable line by line.</div>
+        <div style="margin-top:10px;"><span class="subchip">atop</span><span class="subchip">hardinfo2</span><span class="subchip">iperf3</span><span class="subchip">lm-sensors</span><span class="subchip">openntpd</span><span class="subchip">plocate</span></div>
+        <div style="margin-top:12px;font-size:11px;color:#9a9a9a;">Substitutions are curated and sourced; the full driving list is in the data below this report.</div></div>
+      <div class="card"><h3>Security triage <span class="note">— 60-second posture, not a benchmark</span></h3>
+        <table><tbody><tr><td><span class='sq' style='background:var(--red);'></span>dnsmasq (unowned binary) listening on <span class='mono'>10.24.21.1:53</span></td><td style='text-align:right;'><span class="badge b-red">action required</span></td></tr><tr><td><span class='sq' style='background:var(--amber);'></span>rygel (Canonical archive) listening on <span class='mono'>10.24.21.1:39793</span></td><td style='text-align:right;'><span class="badge b-amber">review</span></td></tr><tr><td><span class='sq' style='background:var(--red);'></span>dropbox (unowned binary) listening on <span class='mono'>0.0.0.0:17500</span></td><td style='text-align:right;'><span class="badge b-red">action required</span></td></tr><tr><td><span class='sq' style='background:var(--red);'></span>dnsmasq (unowned binary) listening on <span class='mono'>192.168.69.1:53</span></td><td style='text-align:right;'><span class="badge b-red">action required</span></td></tr><tr><td><span class='sq' style='background:var(--amber);'></span>SSH posture: PasswordAuthentication yes</td><td style='text-align:right;'><span class="badge b-amber">attention</span></td></tr><tr><td><span class='sq' style='background:var(--green);'></span>Account hygiene</td><td style='text-align:right;'><span class="badge b-green">pass</span></td></tr><tr><td><span class='sq' style='background:var(--amber);'></span>Firewall (ufw) not active</td><td style='text-align:right;'><span class="badge b-amber">attention</span></td></tr><tr><td><span class='sq' style='background:var(--green);'></span>Unattended security upgrades enabled</td><td style='text-align:right;'><span class="badge b-green">pass</span></td></tr></tbody></table></div>
+    </div>
+    <div class="honesty"><strong style="font-weight:500;">Honesty note.</strong> atime evidence is not used in this demo build — 0 of 50 real mounts are noatime anyway. Usage verdicts rest on processes, sockets, configs, units, and user state only. “No evidence of use” never means “unused.”
+      <ul><li>maxminddb module is installed but no .mmdb database was found in /var/lib/GeoIP, /usr/share/GeoIP, /usr/local/share/GeoIP, /opt/geoip — add a GeoLite2/db-ip Country db or pass --geoip-db PATH</li></ul></div>
+    <div class="footer">generated by ossa-lite v0.4.2-lite · script sha256:05fac353093d · 2026-11-16 08:54 PST · demo build — the full ossa adds SBOM signing, CVE/OVAL, and the upgrade-drift view</div>
+    </main></div></body></html>
